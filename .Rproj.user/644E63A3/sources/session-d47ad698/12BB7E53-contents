@@ -1,0 +1,78 @@
+# ==============================================================================
+# Project: Global Value Patterns Analysis (PCA)
+# Script: PCA Statistical Modeling & Visualization
+# ==============================================================================
+
+# 1. Load Libraries
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(here, tidyverse, paran, factoextra)
+
+# 2. Data Loading
+load(here("data", "life.Rdata"))
+
+# ==========================================
+# Step 1: Statistical Analysis & Preprocessing
+# ==========================================
+
+# Standardize variables (Crucial for PCA to avoid variance dominance)
+zlife <- scale(life, center = TRUE, scale = TRUE)
+
+# Conduct Principal Component Analysis
+life_pca <- prcomp(zlife)
+
+# --- Dimensionality Determination (Horn's Parallel Analysis) ---
+# We use Horn's PA instead of the Kaiser criterion for robust component selection.
+png(filename = here("output", "horn_parallel_analysis.png"), 
+    width = 800, height = 600)
+
+par(cex = 0.8) 
+set.seed(258)
+# Running 5000 iterations to ensure stability
+paran(zlife, iterations = 5000, graph = TRUE, cfa = FALSE, centile = 95)
+title("Horn's Parallel Analysis for Component Retention")
+
+dev.off() 
+
+# --- Mathematical Verification (Loadings Calculation) ---
+# Calculate Component Loadings manually: L = U * sqrt(Lambda)
+A <- life_pca$rotation %*% diag(life_pca$sdev)
+colnames(A) <- paste0("PC", 1:ncol(A))
+
+# Calculate Variance Accounted For (VAF) for the first two components
+loadings_summary <- round(cbind(
+  pc1 = A[,1], 
+  pc2 = A[,2], 
+  VAF = apply(A[,1:2]^2, 1, sum)
+), 2)
+
+# Save the statistical summary as a CSV (Optional, but professional)
+write.csv(loadings_summary, here("output", "pca_loadings_summary.csv"))
+
+# ==========================================
+# Step 2: Visualization (The "Hero" Plot)
+# ==========================================
+
+pca_plot <- fviz_pca_biplot(life_pca,
+                            # Sample (Countries) styling
+                            geom.ind = "text",       
+                            col.ind = "cos2",        # Color by quality of representation
+                            gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                            repel = TRUE,            # Avoid text overlapping
+                            
+                            # Variable (Arrows) styling
+                            col.var = "black",       
+                            arrowsize = 0.8,
+                            labelsize = 4,
+                            
+                            title = "Global Lifestyle Values: PCA Biplot",
+                            subtitle = "PC1 vs PC2 (Explaining 66.5% of Variance)"
+)
+
+# Export the plot
+ggsave(filename = here("output", "pca_biplot_professional.png"), 
+       plot = pca_plot, 
+       width = 12, height = 8, dpi = 300)
+
+print("Analysis Complete. Check 'output' folder for results.")
+
+
