@@ -3,7 +3,7 @@
     "path": "~/Desktop/Teresa/github/EMNIST-Classification-Benchmark/script/classification_benchmark.R",
     "project_path": "script/classification_benchmark.R",
     "type": "r_source",
-    "hash": "667980558",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1769959738258.0,
@@ -12,8 +12,8 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "496,0",
-        "scrollLine": "466"
+        "cursorPosition": "11,33",
+        "scrollLine": "0"
     },
     "folds": "",
     "lastKnownWriteTime": 1769961443,

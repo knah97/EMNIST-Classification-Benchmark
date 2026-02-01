@@ -11,11 +11,11 @@ This project benchmarks **7 supervised learning algorithms** on high-dimensional
 * **Techniques:** Principal Component Analysis (PCA), Cross-Validation, Scree Test.
 
 ## 🔬 Experimental Design: Sample Size Impact
-To evaluate the robustness of classifiers under different data regimes, we constructed two training scenarios using balanced datasets[cite: 10]:
+To evaluate the robustness of classifiers under different data regimes, we constructed two training scenarios using balanced datasets:
 
-* **Scenario 1 (High Resource):** Training on **9,600 images** (2,400 per class)[cite: 7]. Represents an ideal setting with abundant data.
-* *Scenario 2 (Low Resource):** Training on **1,600 images** (400 per class)[cite: 8]. Represents a data-scarce setting to test model stability.
-* **Test Set:** A separate set of **1,600 images** was used to evaluate out-of-sample performance for both scenarios[cite: 9].
+* **Scenario 1 (High Resource):** Training on **9,600 images** (2,400 per class). Represents an ideal setting with abundant data.
+* *Scenario 2 (Low Resource):** Training on **1,600 images** (400 per class). Represents a data-scarce setting to test model stability.
+* **Test Set:** A separate set of **1,600 images** was used to evaluate out-of-sample performance for both scenarios.
 
 ## 📊 Methodology & Results
 We reduced the data from **784 dimensions (pixels)** to **~69 components** (explaining 90% variance)  and evaluated the following models:
